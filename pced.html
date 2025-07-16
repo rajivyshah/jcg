@@ -272,7 +272,7 @@ document.getElementById('custForm').addEventListener('submit', async e => {
   const data = {
     parentName:      fd.get('parentName'),
     childName:       fd.get('childName'),
-    childDOB: toIST(fd.get('childDOB')),
+    childDOB: fd.get('childDOB'),   // leave as yyyy-mm-dd
     childAge:        ageInput.value,
     location:        fd.get('location'),
     preferredCenter: fd.get('preferredCenter'),
