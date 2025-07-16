@@ -167,7 +167,8 @@ th {
 
   <label>Location *</label><input name="location" required>
   <label>Preferred Center *</label><input name="preferredCenter" required>
-  <label>Mobile *</label><input type="tel" name="mobile" required pattern="[0-9+\s()\-]{7,}">
+  <label>Mobile *</label><input type="tel" name="mobile" required
+       pattern="[0-9+\s()–-]{7,}">
   <label>Parent Email</label><input type="email" name="parentEmail" placeholder="optional">
   <label>Source</label>
   <select name="source">
@@ -199,6 +200,18 @@ th {
 <script>
 // 1.  Replace with your Google Apps Script web-app URL
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzaRHuY2OkGYP04HKqTl5JEpITnB09AReQ4svH3kcVUwqCvHT96F8IgNtLU4AGWOJabog/exec';
+
+
+function toIST(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit', month: '2-digit', year: 'numeric'
+  }).format(d);
+}
+
+
 
 
 const dobInput = document.getElementById('childDOB');
