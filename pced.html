@@ -2,187 +2,205 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Parent-Child Enquiry</title>
+<title>Jungle Cubs Admission Enquiry – Final</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
  :root{--green:#28a745;--yellow:#ffeb3b;--radius:8px;--max-width:600px}
 *{box-sizing:border-box}
 body{margin:0;padding:1rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f5f7fa;color:#333;line-height:1.5}
-h1,h2{text-align:center;margin:.5rem 0 1rem}
-form{background:#fff;padding:1.5rem 1rem;border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);max-width:var(--max-width);margin:0 auto 2rem}
+h1{text-align:center;margin:.5rem 0 1rem}
+form{background:#fff;padding:1.5rem 1rem;border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);max-width:var(--max-width);margin:0 auto}
 label{font-weight:600;margin:1rem 0 .25rem;display:block}
 input,select,textarea{width:100%;padding:.75rem;border:1px solid #ccc;border-radius:var(--radius);font-size:16px}
+#childAge{background:#e6e6e6;color:#666;cursor:not-allowed}
 button{margin-top:1.5rem;width:100%;padding:1rem;font-size:1.25rem;font-weight:700;background:var(--green);color:var(--yellow);border:none;border-radius:var(--radius);cursor:pointer}
-button:hover{background:#1e7e34}
-table{width:100%;max-width:var(--max-width);margin:0 auto;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-th,td{padding:.75rem .5rem;border-bottom:1px solid #eee;text-align:left;font-size:.9rem}
-th{background:#f1f3f5}
-@media(max-width:768px){
-  table,thead,tbody,th,td,tr{display:block}
-  thead tr{display:none}
-  tr{margin-bottom:1rem;border:1px solid #ddd;border-radius:var(--radius);padding:.75rem}
-  td{border:none;position:relative;padding-left:45%;font-size:.9rem}
-  td::before{content:attr(data-label);position:absolute;left:.75rem;width:40%;font-weight:600;color:#555}
-}
+button:disabled{background:#1e7e34;cursor:not-allowed}
+button:hover:not(:disabled){background:#1e7e34}
+small{color:#555;display:block;margin-top:.25rem}
+.popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center}
+.popup-content{background:#fff;padding:2rem;border-radius:var(--radius);text-align:center;max-width:320px}
+.popup-content button{margin:.5rem 0;width:100%}
 </style>
 </head>
 <body>
 
 
-<h1>Parent-Child Enquiry</h1>
-<form id="custForm">
+<h1>Jungle Cubs Admission Enquiry</h1>
+<form id="enquiryForm">
   <label>Parent Name *</label><input name="parentName" required>
   <label>Child Name *</label><input name="childName" required>
 
 
   <label>Child Date of Birth *</label>
   <input type="date" name="childDOB" id="childDOB" required>
-
-
   <label>Child Age (auto)</label>
-  <input type="text" name="childAge" id="childAge" readonly>
+  <input type="text" id="childAge" readonly>
 
 
   <label>Location *</label><input name="location" required>
-  <label>Preferred Center *</label><input name="preferredCenter" required>
-  <label>Mobile *</label><input type="tel" name="mobile" required pattern="[0-9+\s()–-]{7,}">
+
+
+  <label>Preferred Center *</label>
+  <select name="preferredCenter" id="preferredCenter" required>
+    <option value="">-- Select --</option>
+    <option>Belapur, Navi Mumbai</option>
+    <option>Bengaluru, Sadashivanagar</option>
+    <option>Bengaluru, Yelahanka PDCSE</option>
+    <option>Borivali West, Mumbai</option>
+    <option>Chandivali – Powai, Mumbai</option>
+    <option>Chembur East, Mumbai</option>
+    <option>Ghatkopar East, Mumbai</option>
+    <option>Goa, Porvorim</option>
+    <option>Hiranandani Estate – Thane</option>
+    <option>Hughes Road, Mumbai</option>
+    <option>Lalbaug, Mumbai</option>
+    <option>Malad West, Mumbai</option>
+    <option>Matunga East, Mumbai</option>
+    <option>Mulund West, Mumbai</option>
+    <option>Pune, Kharadi</option>
+    <option>Pune, Kothrud</option>
+    <option>Thane – Indo Scots Global</option>
+    <option>Wadala, Mumbai</option>
+  </select>
+
+
+  <label>Mobile *</label>
+  <input type="tel" name="mobile" required pattern="[0-9]{10}" maxlength="10" minlength="10"
+         title="Enter 10 digit mobile number">
+  <small>Enter 10-digit mobile. NRI: type any random 10 digits and add your real number (with country code) in Notes below.</small>
+
+
   <label>Parent Email</label><input type="email" name="parentEmail" placeholder="optional">
   <label>Source</label>
   <select name="source"><option value="">-- optional --</option>
-    <option>Google</option><option>Facebook</option><option>Instagram</option><option>Referral</option><option>Other</option>
+    <option>Google</option><option>Facebook</option>
+    <option>Instagram</option><option>Referral</option><option>Other</option>
   </select>
-  <label>Created By</label><input name="createdBy" placeholder="optional">
   <label>Notes</label><textarea name="notes" rows="3" placeholder="optional"></textarea>
-<br> <br>
-  <button type="submit" id="saveBtn">Save & Sync</button>
+
+
+  <button type="submit" id="enquiryBtn">Send Enquiry</button>
   <p id="msg" class="error"></p>
 </form>
 
 
-<h2>All Records (<span id="count">0</span>)</h2>
-<table id="list">
-  <thead>
-    <tr>
-      <th>Parent</th><th>Child</th><th>DOB</th><th>Age</th><th>Location</th><th>Center</th>
-      <th>Mobile</th><th>Email</th><th>Source</th><th>Created By</th><th>Created At</th><th>Notes</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<!-- Thank-you pop-up -->
+<div class="popup" id="thankPopup">
+  <div class="popup-content">
+    <p>Thank you for sharing your details, we will revert shortly.</p>
+    <button onclick="openLink('https://www.junglecubsgyms.com')">
+      Visit Jungle Cubs Gym Website
+    </button>
+    <button onclick="openLink('https://www.instagram.com/junglecubsgym')">
+      Jungle Cubs Gym on Instagram
+    </button>
+   <a id="waLink" class="btn" target="_blank" rel="noopener"
+   style="display:inline-block;margin:.5rem 0;padding:.75rem 1rem;background:var(--green);color:var(--yellow);border-radius:var(--radius);text-decoration:none;">
+  Send WhatsApp to Centre
+</a>
+
+
+  </div>
+</div>
 
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzaRHuY2OkGYP04HKqTl5JEpITnB09AReQ4svH3kcVUwqCvHT96F8IgNtLU4AGWOJabog/exec'; // ← replace!
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzpEk-JG4BPO99g5xHUx-P7XVcMJFNz8_7M3R46cKPcclkl6TlrHcYUHxQHeUKk1XuTgA/exec'; // ← replace with real URL
 
 
-const dobInput = document.getElementById('childDOB');
-const ageInput = document.getElementById('childAge');
-const tbody    = document.querySelector('#list tbody');
+const waLinks = {
+  'Belapur, Navi Mumbai': 'https://wa.me/+919137506479',
+  'Bengaluru, Sadashivanagar': 'https://wa.me/+918779408213',
+  'Bengaluru, Yelahanka PDCSE': 'https://wa.me/+918779408213',
+  'Borivali West, Mumbai': 'https://wa.me/+918591586326',
+  'Chandivali – Powai, Mumbai': 'https://wa.me/+919137087715',
+  'Chembur East, Mumbai': 'https://wa.me/+919137513185',
+  'Ghatkopar East, Mumbai': 'https://wa.me/+917303061717',
+  'Goa, Porvorim': 'https://wa.me/+919967130057',
+  'Hiranandani Estate – Thane': 'https://wa.me/+919326068804',
+  'Hughes Road, Mumbai': 'https://wa.me/+919326770400',
+  'Lalbaug, Mumbai': 'https://wa.me/+919137331025',
+  'Malad West, Mumbai': 'https://wa.me/+919653198744',
+  'Matunga East, Mumbai': 'https://wa.me/+918652857059',
+  'Mulund West, Mumbai': 'https://wa.me/+919082786189',
+  'Pune, Kharadi': 'https://wa.me/+918850931091',
+  'Pune, Kothrud': 'https://wa.me/+918850931091',
+  'Thane – Indo Scots Global': 'https://wa.me/+919136665247',
+  'Wadala, Mumbai': 'https://wa.me/+919152890087'
+};
 
 
-/* Age calculator */
+function openLink(url) {
+  window.open(url, '_blank');
+  document.getElementById('thankPopup').style.display = 'none';
+}
+
+
 function calcAge(dobStr) {
   if (!dobStr) return '';
   const dob = new Date(dobStr);
   const now = new Date();
   let years = now.getFullYear() - dob.getFullYear();
   let months = now.getMonth() - dob.getMonth();
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
+  if (months < 0) { years--; months += 12; }
   return `${years} yr ${months} mo`;
 }
+document.getElementById('childDOB').addEventListener('change', () => {
+  document.getElementById('childAge').value = calcAge(document.getElementById('childDOB').value);
+});
 
 
-dobInput.addEventListener('change', () => ageInput.value = calcAge(dobInput.value));
-
-
-/* Load table */
-async function load() {
-  const res = await fetch(SHEET_URL);
-  const rows = await res.json();
-  tbody.innerHTML = '';
-  rows.forEach(r => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td data-label="Parent">${r.ParentName}</td>
-      <td data-label="Child">${r.ChildName}</td>
-      <td data-label="DOB">${r.ChildDOB}</td>
-      <td data-label="Age">${r.ChildAge}</td>
-      <td data-label="Location">${r.Location}</td>
-      <td data-label="Center">${r.PreferredCenter}</td>
-      <td data-label="Mobile">${r.Mobile}</td>
-      <td data-label="Email">${r.ParentEmail}</td>
-      <td data-label="Source">${r.Source}</td>
-      <td data-label="By">${r.CreatedBy}</td>
-      <td data-label="At">${r.CreatedAt}</td>
-      <td data-label="Notes">${r.Notes}</td>`;
-    tbody.appendChild(tr);
-  });
-  document.getElementById('count').textContent = rows.length;
-}
-
-
-/* Form submit */
-document.getElementById('custForm').addEventListener('submit', async e => {
+document.getElementById('enquiryForm').addEventListener('submit', async e => {
   e.preventDefault();
+  const btn = document.getElementById('enquiryBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+
+
   const fd = new FormData(e.target);
+  const centre = fd.get('preferredCenter');
+
+
   const data = {
     parentName: fd.get('parentName'),
     childName: fd.get('childName'),
     childDOB: fd.get('childDOB'),
-    childAge: ageInput.value,
+    childAge: document.getElementById('childAge').value,
     location: fd.get('location'),
-    preferredCenter: fd.get('preferredCenter'),
+    preferredCenter: centre,
     mobile: fd.get('mobile'),
     parentEmail: fd.get('parentEmail') || '',
     source: fd.get('source') || '',
-    createdBy: fd.get('createdBy') || '',
     notes: fd.get('notes') || ''
   };
+
+
   const res = await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify(data) });
-  if (res.ok) {
-    e.target.reset(); ageInput.value = ''; load();
-    document.getElementById('msg').textContent = 'Saved & synced!';
-    setTimeout(() => (document.getElementById('msg').textContent = ''), 2000);
-  } else {
-    document.getElementById('msg').textContent = 'Error – check console';
-  }
+  btn.disabled = false; btn.textContent = 'Send Enquiry';
+
+
+if (res.ok) {
+  const centre = fd.get('preferredCenter');
+  const msg =
+    `*Jungle Cubs Enquiry*\n\n` +
+    `Parent: ${data.parentName}\n` +
+    `Child: ${data.childName}\n` +
+    `DOB: ${data.childDOB}\n` +
+    `Age: ${data.childAge}\n` +
+    `Location: ${data.location}\n` +
+    `Centre: ${centre}\n` +
+    `Mobile: ${data.mobile}\n` +
+    `Email: ${data.parentEmail || 'N/A'}\n\n` +
+    `Notes:\n${data.notes || 'None'}`;
+  const link = waLinks[centre] + '?text=' + encodeURIComponent(msg);
+  document.getElementById('waLink').href = link;
+  document.getElementById('waLink').textContent = `Send WhatsApp to ${centre}`;
+  document.getElementById('thankPopup').style.display = 'flex';
+  document.getElementById('enquiryForm').reset();
+  document.getElementById('childAge').value = '';
+}
+
+
 });
-load();
-
-
-const saveBtn = document.getElementById('saveBtn');
-
-
-document.getElementById('custForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  saveBtn.disabled = true;          // 🔒 disable
-  saveBtn.textContent = 'Saving…';
-
-
-  try {
-    const fd = new FormData(e.target);
-    const data = { /* build payload exactly as before */ };
-
-
-    const res = await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify(data) });
-    if (res.ok) {
-      e.target.reset(); ageInput.value = ''; load();
-      document.getElementById('msg').textContent = 'Saved & synced!';
-    } else {
-      document.getElementById('msg').textContent = 'Error – check console';
-    }
-  } finally {
-    saveBtn.disabled = false;        // 🔓 re-enable
-    saveBtn.textContent = 'Save & Sync';
-  }
-});
-
-
-
-
 </script>
 </body>
 </html>
