@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jungle Cubs Attendance</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Jungle Cubs Attendance</h1>
+
+
+    <!-- Login -->
+    <div id="loginBox" class="box">
+      <label class="label">Jungle Cubs E-mail</label>
+      <input id="email" class="input" type="email" placeholder="you@junglegym.in">
+      <button class="button is-primary mt-2" onclick="doLogin()">Log in</button>
+      <p id="loginMsg" class="has-text-danger"></p>
+    </div>
+
+
+    <!-- Main -->
+    <div id="mainBox" style="display:none">
+      <div id="info" class="notification is-info"></div>
+      <button class="button is-success is-large" onclick="punch('In')">Mark In</button>
+      <button class="button is-warning is-large" onclick="punch('Out')">Mark Out</button><br><br>
+      <textarea id="note" class="textarea" placeholder="Optional notes…"></textarea>
+      <div id="msg" class="notification is-hidden"></div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbxMAbokJHN1UDSEhMjbkPdSXqy-WOtJMiPjf4GylJmq4jK_4hgUluA9domVa25wH0YR/exec'; // your /exec here
+
+
+function showMsg(text, ok=true) {
+  const m = document.getElementById('msg');
+  m.textContent = text;
+  m.className = ok ? 'notification is-success' : 'notification is-danger';
+  m.classList.remove('is-hidden');
+}
+
+
+function doLogin() {
+  const email = document.getElementById('email').value.trim();
+  if (!email) return;
+  fetch(API_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email, type:'login', note:'', lat:0, lon:0})
+  })
+  .then(r => r.json())
+  .then(data => {
+    showMsg(data.msg, data.ok);
+    if (data.ok) {
+      localStorage.setItem('jungleEmail',  email);
+      localStorage.setItem('jungleName',   data.name);
+      localStorage.setItem('jungleCenter', data.center);
+      showMain(data.name, data.center);
+    }
+  })
+  .catch(e => {
+    document.getElementById('loginMsg').textContent = 'Login failed: ' + e.message;
+    console.error(e);
+  });
+}
+
+
+function showMain(name, center) {
+  document.getElementById('loginBox').style.display = 'none';
+  document.getElementById('mainBox').style.display   = 'block';
+  document.getElementById('info').innerHTML = `<b>${name}</b> — <b>${center}</b>`;
+}
+
+
+window.onload = () => {
+  const email = localStorage.getItem('jungleEmail');
+  if (email) showMain(localStorage.getItem('jungleName'), localStorage.getItem('jungleCenter'));
+  else document.getElementById('loginBox').style.display = 'block';
+};
+
+
+function punch(type) {
+  const email = localStorage.getItem('jungleEmail');
+  const note  = document.getElementById('note').value;
+  navigator.geolocation.getCurrentPosition(pos => {
+    fetch(API_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email, type, note, lat:pos.coords.latitude, lon:pos.coords.longitude})
+    })
+    .then(r => r.json())
+    .then(data => showMsg(data.msg, data.ok))
+    .catch(e => showMsg('Punch error: ' + e.message, false));
+  }, e => showMsg('Location required: ' + e.message, false));
+}
+</script>
+
+
+
+
+</body>
+</html>
