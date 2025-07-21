@@ -50,10 +50,15 @@ function showMsg(text, ok=true) {
 function doLogin() {
   const email = document.getElementById('email').value.trim();
   if (!email) return;
+
+
   fetch(`${API_URL}?email=${encodeURIComponent(email)}&type=login&lat=0&lon=0`)
     .then(r => r.json())
     .then(data => {
+      // 👇 always show the message
       showMsg(data.msg, data.ok);
+
+
       if (data.ok) {
         localStorage.setItem('jungleEmail',  email);
         localStorage.setItem('jungleName',   data.name);
@@ -63,9 +68,10 @@ function doLogin() {
     })
     .catch(e => {
       document.getElementById('loginMsg').textContent = 'Login failed: ' + e.message;
-      console.error(e);
     });
 }
+
+
 
 
 /* 3. Punch attendance via GET */
