@@ -34,7 +34,8 @@
 
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbxMAbokJHN1UDSEhMjbkPdSXqy-WOtJMiPjf4GylJmq4jK_4hgUluA9domVa25wH0YR/exec'; // your /exec here
+/* 1. Put your fresh /exec URL here */
+const API_URL = 'https://script.google.com/macros/s/AKfycbxMAbokJHN1UDSEhMjbkPdSXqy-WOtJMiPjf4GylJmq4jK_4hgUluA9domVa25wH0YR/exec';
 
 
 function showMsg(text, ok=true) {
@@ -45,11 +46,10 @@ function showMsg(text, ok=true) {
 }
 
 
+/* 2. Login via GET */
 function doLogin() {
   const email = document.getElementById('email').value.trim();
   if (!email) return;
-
-
   fetch(`${API_URL}?email=${encodeURIComponent(email)}&type=login&lat=0&lon=0`)
     .then(r => r.json())
     .then(data => {
@@ -68,15 +68,20 @@ function doLogin() {
 }
 
 
-
-
-function showMain(name, center) {
-  document.getElementById('loginBox').style.display = 'none';
-  document.getElementById('mainBox').style.display   = 'block';
-  document.getElementById('info').innerHTML = `<b>${name}</b> — <b>${center}</b>`;
+/* 3. Punch attendance via GET */
+function punch(type) {
+  const email = localStorage.getItem('jungleEmail');
+  const note  = document.getElementById('note').value;
+  navigator.geolocation.getCurrentPosition(pos => {
+    fetch(`${API_URL}?email=${encodeURIComponent(email)}&type=${type}&note=${encodeURIComponent(note)}&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+      .then(r => r.json())
+      .then(data => showMsg(data.msg, data.ok))
+      .catch(e => showMsg('Punch error: ' + e.message, false));
+  }, e => showMsg('Location required: ' + e.message, false));
 }
 
 
+/* 4. Auto-login if already stored */
 window.onload = () => {
   const email = localStorage.getItem('jungleEmail');
   if (email) showMain(localStorage.getItem('jungleName'), localStorage.getItem('jungleCenter'));
@@ -84,24 +89,11 @@ window.onload = () => {
 };
 
 
-function punch(type) {
-  const email = localStorage.getItem('jungleEmail');
-  const note  = document.getElementById('note').value;
-  navigator.geolocation.getCurrentPosition(pos => {
-    fetch(API_URL, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({email, type, note, lat:pos.coords.latitude, lon:pos.coords.longitude})
-    })
-    .then(r => r.json())
-    .then(data => showMsg(data.msg, data.ok))
-    .catch(e => showMsg('Punch error: ' + e.message, false));
-  }, e => showMsg('Location required: ' + e.message, false));
+function showMain(name, center) {
+  document.getElementById('loginBox').style.display = 'none';
+  document.getElementById('mainBox').style.display   = 'block';
+  document.getElementById('info').innerHTML = `<b>${name}</b> — <b>${center}</b>`;
 }
 </script>
-
-
-
-
 </body>
 </html>
