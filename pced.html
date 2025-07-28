@@ -88,15 +88,9 @@ small{color:#555;display:block;margin-top:.25rem}
 <div class="popup" id="thankPopup">
   <div class="popup-content">
     <p>Thank you for sharing your details, we will revert shortly.</p>
-    <button onclick="openLink('https://www.junglecubsgyms.com')">
-      Visit Jungle Cubs Gym Website
-    </button>
-    <button onclick="openLink('https://www.instagram.com/junglecubsgym')">
-      Jungle Cubs Gym on Instagram
-    </button>
    <a id="waLink" class="btn" target="_blank" rel="noopener"
    style="display:inline-block;margin:.5rem 0;padding:.75rem 1rem;background:var(--green);color:var(--yellow);border-radius:var(--radius);text-decoration:none;">
-  Send WhatsApp to Centre
+  Send WhatsApp Message to Jungle Cubs Gym Centre
 </a>
 
 
@@ -193,7 +187,7 @@ if (res.ok) {
     `Notes:\n${data.notes || 'None'}`;
   const link = waLinks[centre] + '?text=' + encodeURIComponent(msg);
   document.getElementById('waLink').href = link;
-  document.getElementById('waLink').textContent = `Send WhatsApp to ${centre}`;
+  document.getElementById('waLink').textContent = `Send WhatsApp Message to Jungle Cubs Gym ${centre}`;
   document.getElementById('thankPopup').style.display = 'flex';
   document.getElementById('enquiryForm').reset();
   document.getElementById('childAge').value = '';
