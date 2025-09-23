@@ -25,14 +25,10 @@ small{color:#555;display:block;margin-top:.25rem}
 <body>
 
 
-
-
 <h1>Jungle Cubs Admission Enquiry</h1>
 <form id="enquiryForm">
   <label>Parent Name *</label><input name="parentName" required>
   <label>Child Name *</label><input name="childName" required>
-
-
 
 
   <label>Child Date of Birth *</label>
@@ -41,17 +37,13 @@ small{color:#555;display:block;margin-top:.25rem}
   <input type="text" id="childAge" readonly>
 
 
-
-
   <label>Location *</label><input name="location" required>
-
-
 
 
   <label>Preferred Center *</label>
   <select name="preferredCenter" id="preferredCenter" required>
     <option value="">-- Select --</option>
-    <option>Bandra, Navi Mumbai</option>
+    <option>Bandra, Mumbai</option>
     <option>Belapur, Navi Mumbai</option>
     <option>Bengaluru, Sadashivanagar</option>
     <option>Bengaluru, Yelahanka PDCSE</option>
@@ -74,14 +66,10 @@ small{color:#555;display:block;margin-top:.25rem}
   </select>
 
 
-
-
   <label>Mobile *</label>
   <input type="tel" name="mobile" required pattern="[0-9]{10}" maxlength="10" minlength="10"
          title="Enter 10 digit mobile number">
   <small>Enter 10-digit mobile. NRI: type any random 10 digits and add your real number (with country code) in Notes below.</small>
-
-
 
 
   <label>Parent Email</label><input type="email" name="parentEmail" placeholder="optional">
@@ -93,13 +81,9 @@ small{color:#555;display:block;margin-top:.25rem}
   <label>Notes</label><textarea name="notes" rows="3" placeholder="optional"></textarea>
 
 
-
-
   <button type="submit" id="enquiryBtn">Send Enquiry</button>
   <p id="msg" class="error"></p>
 </form>
-
-
 
 
 <!-- Thank-you pop-up -->
@@ -112,18 +96,12 @@ small{color:#555;display:block;margin-top:.25rem}
 </a>
 
 
-
-
   </div>
 </div>
 
 
-
-
 <script>
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzpEk-JG4BPO99g5xHUx-P7XVcMJFNz8_7M3R46cKPcclkl6TlrHcYUHxQHeUKk1XuTgA/exec'; // ← replace with real URL
-
-
 
 
 const waLinks = {
@@ -145,19 +123,15 @@ const waLinks = {
   'Pune, Kharadi': 'https://wa.me/+918850931091',
   'Pune, Kothrud': 'https://wa.me/+918850931091',
   'Thane – Indo Scots Global': 'https://wa.me/+919136665247',
-  'Wadala, Mumbai': 'https://wa.me/+919152890087'
-  Worli, Mumbai': 'https://wa.me/+917738440087'
+  'Wadala, Mumbai': 'https://wa.me/+919152890087',
+  'Worli, Mumbai': 'https://wa.me/+917738440087'
 };
-
-
 
 
 function openLink(url) {
   window.open(url, '_blank');
   document.getElementById('thankPopup').style.display = 'none';
 }
-
-
 
 
 function calcAge(dobStr) {
@@ -174,20 +148,14 @@ document.getElementById('childDOB').addEventListener('change', () => {
 });
 
 
-
-
 document.getElementById('enquiryForm').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = document.getElementById('enquiryBtn');
   btn.disabled = true; btn.textContent = 'Sending…';
 
 
-
-
   const fd = new FormData(e.target);
   const centre = fd.get('preferredCenter');
-
-
 
 
   const data = {
@@ -204,12 +172,8 @@ document.getElementById('enquiryForm').addEventListener('submit', async e => {
   };
 
 
-
-
   const res = await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify(data) });
   btn.disabled = false; btn.textContent = 'Send Enquiry';
-
-
 
 
 if (res.ok) {
@@ -232,8 +196,6 @@ if (res.ok) {
   document.getElementById('enquiryForm').reset();
   document.getElementById('childAge').value = '';
 }
-
-
 
 
 });
