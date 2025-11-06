@@ -72,6 +72,79 @@
   .form-column label {
       margin-top: 1rem;
   }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    body {
+      padding: 0.5rem;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      padding: 0.75rem 0.5rem;
+      margin: 0.25rem 0 0.25rem;
+    }
+    
+    h4 {
+      font-size: 0.9rem;
+      margin: 0.25rem 0 0.75rem;
+    }
+    
+    form {
+      padding: 1rem 0.75rem;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .form-column {
+      width: 100%;
+    }
+    
+    .form-column label {
+      margin-top: 0.75rem;
+    }
+    
+    button {
+      font-size: 1.1rem;
+      padding: 0.875rem;
+      margin-top: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      padding: 0.25rem;
+    }
+    
+    h1 {
+      font-size: 1.3rem;
+      padding: 0.75rem 0.25rem;
+    }
+    
+    h4 {
+      font-size: 0.8rem;
+    }
+    
+    form {
+      padding: 0.75rem 0.5rem;
+    }
+    
+    input, select, textarea {
+      padding: 0.625rem;
+      font-size: 16px; /* Prevents zoom on iOS */
+      height: 44px;
+    }
+    
+    button {
+      font-size: 1rem;
+      padding: 0.75rem;
+    }
+  }
 </style>
 </head>
 <body>
@@ -79,7 +152,7 @@
 <h1>Jungle Cubs Gym - Kukdukoo Pune Event </h1>
 <h4>Mahalaxmi Lawns, Kharadi<br>Saturday 08/11/2025 & Sunday 09/11/2025</h4>
 <!-- 🎯 CRITICAL: REPLACE WITH YOUR NEWLY DEPLOYED PUNE WEB APP URL -->
-<form method="POST" action="https://script.google.com/macros/s/AKfycbyvWHQlab7lnzomuRS7lw9oNU1Ln5CHyL7X_xih1A4g_sIVOSWit8ZES3fsppLmSMgO/exec">
+<form method="POST" action="https://script.google.com/macros/s/AKfycbwF73IuDKeK3CIW5Cx3NQ2OGU8aj5m4d2KxfIBlu0WTsr5Bz4xLCWUtoOg2OmKwhAl_/exec">
   
   <label>Parent Name *</label><input name="parentName" required>
   <label>Child Name *</label><input name="childName" required>
