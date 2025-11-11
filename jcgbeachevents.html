@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jungle Cubs Beach Events — Registration</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f5f7fa; line-height: 1.5; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .box {
+      background: #fff; padding: 1.5rem; border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08); max-width: 860px; width: 100%;
+    }
+    h1 { color: #28a745; font-size: 1.6rem; margin-bottom: .75rem; font-weight: 800; text-align: center; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { font-weight: 600; color: #333; display: block; margin-top: .5rem; }
+    input, select {
+      width: 100%; padding: .75rem; border: 1px solid #dcdfe3; border-radius: 10px; margin-top: .35rem;
+      font-size: 1rem; background: #fff;
+    }
+    input[readonly] { background: #f0f0f0; color: #555; cursor: not-allowed; }
+    .button-style {
+      display: block; width: 100%; text-align: center; padding: 1rem; margin: 16px 0 0;
+      font-weight: 800; font-size: 1.1rem; border: none; border-radius: 10px;
+      cursor: pointer; text-decoration: none; transition: background-color .25s ease;
+    }
+    .primary { background: #28a745; color: #ffeb3b; }
+    .primary:hover:not([disabled]) { background: #1e7e34; }
+    .primary[disabled] { background:#9fcaa9; cursor:not-allowed; }
+    .secondary { background: #6c757d; color: #fff; }
+    .secondary:hover { background: #5a6268; }
+    .summary {
+      margin-top: 14px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 10px; padding: 12px;
+      font-size: .95rem; color: #333;
+    }
+    .muted { color:#666; font-size:.92rem; }
+    .pay-wrap {
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+      margin-top:12px; align-items:stretch;
+      background:#fff; border:1px solid #e9ecef; border-radius:10px; padding:12px;
+    }
+    .pay-col { display:flex; flex-direction:column; justify-content:center; }
+    .qr-box { background:#fff; border:1px dashed #cfd6dc; border-radius:10px; padding:10px; text-align:center; }
+    .hidden { display:none; }
+    @media (max-width: 780px) { .row, .pay-wrap { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Jungle Cubs Beach Events — Registration</h1>
+
+
+    <!-- Configure these -->
+    <script>
+      const ENDPOINT_URL    = "https://script.google.com/macros/s/AKfycbzH8wt2CymozYbRRWTGW6gsPqwByL_uUNOcd-fRjeGLWkH9gGlj0hLbHgDN7Zz4WNSOYw/exec"; // your Apps Script /exec
+      const BUSINESS_UPI    = "junglecubsgym7@oksbii";          // e.g., junglecubs@icici
+      const BUSINESS_NAME   = "Jungle Cubs";      // shown in UPI apps
+      const WHATSAPP_TARGET = "919082786189";         // digits only (no +)
+    </script>
+
+
+    <form id="beachForm" method="post" action="">
+      <div class="row">
+        <div>
+          <label>Parent Name
+            <input type="text" name="parentName" id="parentName" required />
+          </label>
+        </div>
+        <div>
+          <label>Child Name
+            <input type="text" name="childName" id="childName" required />
+          </label>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div>
+          <label>Child DOB
+            <input type="date" name="childDOB" id="childDOB" required />
+          </label>
+        </div>
+        <div>
+          <label>Child Age (years & months)
+            <input type="text" name="childAge" id="childAge" readonly />
+          </label>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div>
+          <label>Location
+            <input type="text" name="location" placeholder="Area / City" required />
+          </label>
+        </div>
+        <div>
+          <label>Mobile (10 digits)
+            <input type="tel" name="mobile" id="mobile"
+                   inputmode="numeric" pattern="^\d{10}$" maxlength="10" minlength="10"
+                   placeholder="9812345678" required />
+          </label>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div>
+          <label>Status
+            <select name="status" id="status" required>
+              <option value="" selected disabled>-- Select Status --</option>
+              <option value="In-house Parent">In-house Parent (Jungle Cubs Gym Parent)</option>
+              <option value="Outsider">Outsider (Not Jungle Cubs Gym Parent)</option>
+            </select>
+          </label>
+        </div>
+
+
+        <div id="feesWrap" class="hidden">
+          <label>Fees Paid
+            <select name="feesPaid" id="feesPaid">
+              <option value="" selected disabled>-- Select --</option>
+              <option>Less than 6 months fees paid</option>
+              <option>6 months or more fees paid</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div id="centreWrap" class="hidden">
+          <label>Centre
+            <select name="centre" id="centre">
+              <option value="" selected disabled>-- Select Centre --</option>
+              <option>Hughes Road</option><option>Worli</option><option>Wadala</option><option>Matunga</option>
+              <option>Lalbaug</option><option>Chembur</option><option>Ghatkopar</option><option>Powai</option>
+              <option>Mulund</option><option>Thane Ram Maruti Road</option><option>Thane Hiranandani Estate</option>
+              <option>Bandra</option><option>Malad</option><option>Borivali</option><option>Belapur</option>
+            </select>
+          </label>
+        </div>
+
+
+        <div>
+          <label>Beach Event Date
+            <select name="beachEventDate" id="beachEventDate" required>
+              <option value="" selected disabled>-- Select Date & Time --</option>
+              <option>15th November, Saturday ; 5pm to 6pm</option>
+              <option>16th November, Sunday ; 7:30am to 8:30am</option>
+              <option>22nd November, Saturday ; 5pm to 6pm</option>
+              <option>30th November, Sunday ; 7:30am to 8:30am</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+
+      <!-- Hidden backend fields -->
+      <input type="hidden" name="paymentNeeded" id="paymentNeeded" value="Pending" />
+      <input type="hidden" name="paid" value="No" />
+      <input type="hidden" name="transactionRef" id="transactionRefHidden" value="" />
+
+
+      <!-- Summary / Payment / Comms (hidden until Status chosen) -->
+      <div id="summaryWrap" class="summary hidden">
+        <strong>Payment Needed:</strong> <span id="paymentText">—</span>
+        <div class="muted" id="personalMsg" style="margin-top:6px;"></div>
+
+
+        <!-- Payment section (shown only when payment is needed) -->
+        <div id="paySection" class="hidden" style="margin-top:12px;">
+          <div class="muted" style="margin-bottom:8px;">
+            Please press the <strong>Pay</strong> button to pay via your UPI app,
+            or scan the <strong>QR code</strong> to pay.
+          </div>
+          <div class="pay-wrap">
+            <!-- LEFT: Pay button -->
+            <div class="pay-col">
+              <a id="upiButton" class="button-style secondary" href="#" target="_blank" rel="noopener">
+                Pay ₹400 via UPI (opens UPI app)
+              </a>
+            </div>
+            <!-- RIGHT: QR -->
+            <div class="qr-box">
+              <div style="font-weight:600;margin-bottom:6px;">UPI QR for ₹400</div>
+              <img id="qrImg" src="" alt="UPI QR" style="width:260px;height:260px;object-fit:contain" />
+              <div class="hint">Scan to pay ₹400</div>
+            </div>
+          </div>
+
+
+          <!-- Transaction reference below payment options -->
+          <div id="txnWrap" style="margin-top:12px;">
+            <label>UPI Payment Reference (required after payment)
+              <input type="text" id="txnRef" placeholder="e.g., UPI Ref / UTR" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      <button id="registerSendBtn" class="button-style primary" type="button" disabled>
+        Register & Send WhatsApp
+      </button>
+    </form>
+  </div>
+
+
+  <script>
+    // Attach endpoint before programmatic submit
+    function ensureAction() { document.getElementById("beachForm").action = ENDPOINT_URL; }
+
+
+    // Enforce exactly 10 digits on mobile
+    const mobileEl = document.getElementById('mobile');
+    mobileEl.addEventListener('input', () => { mobileEl.value = mobileEl.value.replace(/\D/g,'').slice(0,10); });
+
+
+    // Age (years & months)
+    const dobEl = document.getElementById("childDOB");
+    const ageEl = document.getElementById("childAge");
+    dobEl.addEventListener("change", () => {
+      if (!dobEl.value) { ageEl.value = ""; return; }
+      const dob = new Date(dobEl.value), today = new Date();
+      let years = today.getFullYear() - dob.getFullYear();
+      let months = today.getMonth() - dob.getMonth();
+      if (today.getDate() < dob.getDate()) months -= 1;
+      if (months < 0) { years -= 1; months += 12; }
+      if (years < 0) { years = 0; months = 0; }
+      ageEl.value = `${years} years ${months} months`;
+    });
+
+
+    // Elements
+    const form        = document.getElementById("beachForm");
+    const statusEl    = document.getElementById("status");
+    const feesWrap    = document.getElementById("feesWrap");
+    const feesEl      = document.getElementById("feesPaid");
+    const centreWrap  = document.getElementById("centreWrap");
+    const centreEl    = document.getElementById("centre");
+    const paymentText = document.getElementById("paymentText");
+    const paymentNeededHidden = document.getElementById("paymentNeeded");
+    const personalMsg = document.getElementById("personalMsg");
+    const parentNameEl= document.getElementById("parentName");
+    const childNameEl = document.getElementById("childName");
+    const beachDateEl = document.getElementById("beachEventDate");
+    const summaryWrap = document.getElementById("summaryWrap");
+    const paySection  = document.getElementById("paySection");
+    const upiButton   = document.getElementById("upiButton");
+    const qrImg       = document.getElementById("qrImg");
+    const txnRefEl    = document.getElementById("txnRef");
+    const txnRefHidden= document.getElementById("transactionRefHidden");
+    const registerBtn = document.getElementById("registerSendBtn");
+
+
+    // Return 'Yes' | 'No' | 'Pending'
+    function computePaymentNeeded(status, feesPaid) {
+      const s = (status || "").toLowerCase();
+      const f = (feesPaid || "").toLowerCase();
+      if (!s) return 'Pending';
+      if (s === "outsider") return 'Yes';
+      if (s === "in-house parent") {
+        if (!f) return 'Pending';                 // wait for Fees Paid choice
+        if (f.includes("less")) return 'Yes';
+        if (f.includes("6 months") || f.includes("more")) return 'No';
+      }
+      return 'Pending';
+    }
+
+
+    function buildUpiLink(amount, parent, child) {
+      const tn = `Beach Event fee for ${child || 'child'} - ${parent || 'parent'}`;
+      return `upi://pay?pa=${encodeURIComponent(BUSINESS_UPI)}&pn=${encodeURIComponent(BUSINESS_NAME)}&am=${encodeURIComponent(amount)}&cu=INR&tn=${encodeURIComponent(tn)}`;
+    }
+    function buildQrUrl(upiLink) {
+      return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiLink)}`;
+    }
+
+
+    // WhatsApp message builder (outsiders include the closing line; in-house do not)
+    function buildWhatsappText(parent, child, status, need, eventStr, feesPaid, txnRef) {
+      let statusLabel = status || '';
+      const st = (status || '').toLowerCase();
+
+
+      if (st === 'in-house parent') {
+        if (need === 'No') statusLabel = 'In-house Parent (6 months + Fees Paid)';
+        else               statusLabel = 'In-house Parent (Fees paid for less than 6 months)';
+      } else if (st === 'outsider') {
+        statusLabel = 'Outsider (Not Jungle Cubs Gym Parent)';
+      }
+
+
+      const lines = [];
+      lines.push('🏖️ Jungle Cubs Beach Event Registration');
+      lines.push(`Parent: ${parent || '-'}`);
+      lines.push(`Child: ${child || '-'}`);
+      lines.push(`Status: ${statusLabel}`);
+      lines.push(`Event: ${eventStr || '-'}`);
+
+
+      if (st === 'in-house parent' && need === 'No') {
+        lines.push('Beach Event Payment Needed: No');
+        lines.push('');
+        lines.push(`Thank you, ${parent || 'Parent'}, — enjoy your complimentary beach event with ${child || 'your child'}.`);
+      } else if (need === 'Yes') {
+        if (st === 'in-house parent') lines.push('Beach Event Payment Needed: Yes');
+        else                          lines.push('Payment Needed: Yes (₹400)');
+        lines.push(`Payment Reference: ${txnRef || '-'}`);
+        lines.push(`Thank you for the payment of ₹400, ${parent || 'Parent'}, — enjoy your beach event with ${child || 'your child'}.`);
+        if (st === 'outsider') {
+          lines.push('');
+          lines.push('We hope to see you soon at Jungle Cubs Gym!');
+        }
+      }
+
+
+      return lines.join('\n');
+    }
+
+
+    function updatePersonalLine(need) {
+      const parent = parentNameEl.value || "Parent";
+      const child  = childNameEl.value || "your child";
+      if (need === "Yes") {
+        personalMsg.textContent = `Hello ${parent}, kindly pay ₹400 towards the beach event for ${child}.`;
+      } else if (need === "No") {
+        personalMsg.textContent = `Hello ${parent}, enjoy the beach event — you do not have to pay any fees for ${child}.`;
+      } else {
+        personalMsg.textContent = `Please complete the required selections.`;
+      }
+    }
+
+
+    function updateUI() {
+      const statusVal = (statusEl.value || "");
+      const inHouse   = statusVal === "In-house Parent";
+
+
+      // Show/hide in-house extras
+      const showInHouseExtras = inHouse;
+      feesWrap.classList.toggle("hidden", !showInHouseExtras);
+      centreWrap.classList.toggle("hidden", !showInHouseExtras);
+      feesEl.required  = showInHouseExtras;
+      centreEl.required= showInHouseExtras;
+      if (!inHouse) { feesEl.value = ""; centreEl.value = ""; }
+
+
+      // Determine need: Yes / No / Pending
+      const need = computePaymentNeeded(statusVal, feesEl.value);
+      paymentNeededHidden.value = need;
+
+
+      // If no status yet → keep hidden/disabled
+      if (!statusVal) {
+        summaryWrap.classList.add("hidden");
+        paySection.classList.add("hidden");
+        paymentText.textContent = "—";
+        personalMsg.textContent = "";
+        registerBtn.disabled = true;
+        return;
+      }
+
+
+      // Show summary
+      summaryWrap.classList.remove("hidden");
+
+
+      // Payment text + personal line
+      paymentText.textContent = (need === "Yes") ? "Yes (₹400)" : (need === "No" ? "No" : "—");
+      updatePersonalLine(need);
+
+
+      // Payment section visible only if need === Yes
+      if (need === "Yes" && BUSINESS_UPI && BUSINESS_UPI.includes("@")) {
+        const upi = buildUpiLink(400, parentNameEl.value, childNameEl.value);
+        upiButton.href = upi;
+        qrImg.src = buildQrUrl(upi);
+        qrImg.alt = "UPI QR for ₹400";
+        paySection.classList.remove("hidden");
+        txnRefEl.required = true;
+      } else {
+        paySection.classList.add("hidden");
+        txnRefEl.required = false;
+        txnRefEl.value = "";
+        txnRefHidden.value = "";
+      }
+
+
+      // Enable main button:
+      // - form must be valid
+      // - if need === Yes, txnRef must be non-empty
+      const formValid = form.checkValidity();
+      const txnOk = (need === "Yes") ? !!txnRefEl.value.trim() : (need === "No");
+      registerBtn.disabled = !(formValid && (need === "No" || (need === "Yes" && txnOk)));
+    }
+
+
+    // Mirror txn ref to hidden field for backend save
+    txnRefEl.addEventListener('input', (e) => {
+      txnRefHidden.value = e.target.value.trim();
+      updateUI();
+    });
+
+
+    // Re-evaluate on all inputs/selects
+    ['change','input','blur'].forEach(evt => {
+      document.querySelectorAll('input, select').forEach(el => el.addEventListener(evt, updateUI));
+    });
+
+
+    // Main unified button: build WA text, open WA, then submit
+    registerBtn.addEventListener('click', () => {
+      const need = paymentNeededHidden.value;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (need === 'Yes' && !txnRefEl.value.trim()) { txnRefEl.reportValidity(); return; }
+
+
+      const waText = buildWhatsappText(
+        parentNameEl.value, childNameEl.value,
+        statusEl.value, need, beachDateEl.value,
+        feesEl.value, txnRefEl.value.trim()
+      );
+      const waUrl = `https://wa.me/${WHATSAPP_TARGET}?text=${encodeURIComponent(waText)}`;
+
+
+      // Open WA first, then submit form
+      window.open(waUrl, '_blank', 'noopener');
+      document.getElementById("beachForm").action = ENDPOINT_URL;
+      form.submit();
+    });
+
+
+    // Init state
+    updateUI();
+    if (dobEl.value) dobEl.dispatchEvent(new Event('change'));
+  </script>
+</body>
+</html>
